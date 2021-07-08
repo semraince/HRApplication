@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -150,18 +152,34 @@ public class ApplicationService {
         return UserDtos;
     }
 
-    /*public List<UserDto> findAllRelatedUsers(int jobId){
+    public List<ApplicationDto> findAllRelatedUsers(int jobId){
         List<User> userList=new ArrayList<>();
         Job job=jobRepository.findById(jobId).get();
-        for(Application application:job.getApplications()){
-            User user=application.getUser();
-            user.createKeywords();
-            userRepository.save(user);
-            application.calculateSimilarity();
-            applicationRepository.save(application);
+        List<Application> applications=job.getApplications();
+        System.out.println(applications.size());
+        if(applications.size()==0){
+            return null;
         }
-
-    }*/
+        for(Application application: applications){
+            if(application.getStatus()==ApplicationState.WAITING.getValue()) {
+                User user = application.getUser();
+                user.createKeywords();
+                job.createKeyWords();
+                jobRepository.save(job);
+                userRepository.save(user);
+                application.calculateSimilarity();
+                applicationRepository.save(application);
+            }
+        }
+        Collections.sort(applications, new Comparator<Application>() {
+            @Override
+            public int compare(Application a1, Application a2) {
+                return -Double.compare(a1.getSimilarity(), a2.getSimilarity());
+            }
+        });
+        List<ApplicationDto> applicationDtos = modelConverter.getModelListFromDataList(applications, ApplicationDto.class);
+        return applicationDtos;
+    }
     /*@RequestMapping("/applications/{advertId}")
     public String findAllApplications(@PathVariable int advertId, Model model) {
         List<Application> applications = advertService.findAdvert(advertId).getApplications();

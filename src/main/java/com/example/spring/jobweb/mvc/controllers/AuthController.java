@@ -54,49 +54,7 @@ public class AuthController {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(token));
-       /* SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println("semraaa");
 
-        String secret = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("secret.key"), Charset.defaultCharset());
-        int expirationInMinutes = 24*60;
-
-        String token = JwtUtils.generateHMACToken(username, authentication.getAuthorities(), secret, expirationInMinutes);
-
-        // Return the token
-        return ResponseEntity.ok(new AuthenticationResponse(token).getToken());*/
     }
-   /*@Autowired
-    JwtTokenProvider tokenProvider;
-    @PostMapping("/generatetoken")
-    public ResponseEntity<?> authenticateUser(@RequestBody HrLoginRequest loginRequest) {
-        if(loginRequest.getUsername().isEmpty() || loginRequest.getPassword().isEmpty()) {
-            return new ResponseEntity(new ApiResponse(false, MessageConstants.USERNAME_OR_PASSWORD_INVALID),
-                    HttpStatus.BAD_REQUEST);
-        }
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-        String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
-    }
-    @PostMapping("/validatetoken")
-    public ResponseEntity<?> getTokenByCredentials(@Valid @RequestBody ValidateTokenRequest validateToken) {
-        String username = null;
-        String jwt =validateToken.getToken();
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            username = tokenProvider.getUsernameFromJWT(jwt);
-            //If required we can have one more check here to load the user from LDAP server
-            return ResponseEntity.ok(new ApiResponse(Boolean.TRUE,MessageConstants.VALID_TOKEN + username));
-        }else {
-            return new ResponseEntity(new ApiResponse(false, MessageConstants.INVALID_TOKEN),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-    }*/
-
-
 
 }

@@ -41,7 +41,7 @@ public class JobController {
     UserService userService;
 
 
-    @RequestMapping(value = "/getAllJobs", method = RequestMethod.POST)
+    @RequestMapping(value = "/getAllJobs", method = RequestMethod.GET)
     private ResponseEntity<List<JobDto>> getAllJobs(){
         String jsDate="2013-3-22 10:13:00";
         Date javaDate= null;

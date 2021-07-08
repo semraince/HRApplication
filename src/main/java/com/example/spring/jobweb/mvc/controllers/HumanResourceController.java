@@ -116,8 +116,8 @@ public class HumanResourceController {
     /*TODO: change String to class *
      */
     @RequestMapping(value="/addBlackList/{userid}",method = RequestMethod.PUT)
-    private ResponseEntity addBlackList(@PathVariable ("userid") int userid,@RequestBody String text){
-        userService.addBlackList(userid,text);
+    private ResponseEntity addBlackList(@PathVariable ("userid") int userid,@RequestBody StringRequest text){
+        userService.addBlackList(userid,text.getText());
         return  ResponseEntity.ok().build();
     }
 
@@ -205,10 +205,10 @@ public class HumanResourceController {
      * @param jobId
      * @return
      */
-   /* @RequestMapping(value="job/related/{jobid}",method = RequestMethod.GET)
-    private ResponseEntity<List<UserDto>> findMostRelatedApp(@PathVariable("jobid")int jobId){
+    @RequestMapping(value="job/related/{jobid}",method = RequestMethod.GET)
+    private ResponseEntity<List<ApplicationDto>> findMostRelatedApp(@PathVariable("jobid")int jobId){
         return ResponseEntity.ok().body(applicationService.findAllRelatedUsers(jobId));
-    }*/
+    }
 
     /***
      * arama yapmak için

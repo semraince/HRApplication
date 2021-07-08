@@ -50,7 +50,6 @@ public class WebSecurityConfigHr extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        //String secret = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("secret.key"), Charset.defaultCharset());
         /*DOĞRU YER*/
         /*httpSecurity.httpBasic().and()
                 .cors().and()
@@ -62,27 +61,12 @@ public class WebSecurityConfigHr extends WebSecurityConfigurerAdapter {
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/getAllJobs");*/
 
         httpSecurity.cors().and().csrf().disable()
-                /*
-                Filters are added just after the ExceptionTranslationFilter so that Exceptions are catch by the exceptionHandling()
-                 Further information about the order of filters, see FilterComparator
-                 */
-                //.addFilterAfter(jwtTokenAuthenticationFilter("/**", secret), ExceptionTranslationFilter.class)
-                //.addFilterAfter(corsFilter(), ExceptionTranslationFilter.class)
-                /*
-                 Exception management is handled by the authenticationEntryPoint (for exceptions related to authentications)
-                 and by the AccessDeniedHandler (for exceptions related to access rights)
-                */
 
-                /*
-                  anonymous() consider no authentication as being anonymous instead of null in the security context.
-                 */
 
                .authorizeRequests()
                 /* All access to the authentication service are permitted without authentication (actually as anonymous) */
                .antMatchers("/hr/**").authenticated()
-                /* All the other requests need an authentication.
-                 Role access is done on Methods using annotations like @PreAuthorize
-                 */
+
                 .and().authorizeRequests().anyRequest().permitAll().and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

@@ -15,8 +15,6 @@ public class SchedulerJob {
     public void setAdvertStatuses() {
         Date date = new Date();
         for (Job job:jobRepository.findAll()) {
-            System.out.println("deneme "+date);
-            System.out.println("deneme "+job.getActivation());
             if (job.getActivation() != null && job.getActivation().before(date)) {
                 job.setStatus(JobState.ACTIVE.getValue());
                 jobRepository.save(job);
